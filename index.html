@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriAI - Smart Agriculture Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                <span>AgriAI</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#crop-health" class="nav-link">Crop Health</a>
+                <a href="#pest-detection" class="nav-link">Pest Detection</a>
+                <a href="#soil-condition" class="nav-link">Soil Condition</a>
+            </nav>
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Smart Agriculture Assistant</h1>
+            <p class="hero-description">Analyze crops, pests, and soil instantly with AI-powered insights</p>
+            <div class="hero-actions">
+                <button class="cta-button primary" onclick="scrollToSection('crop-health')">
+                    <i class="fas fa-leaf"></i>
+                    Upload Leaf Image
+                </button>
+                <button class="cta-button secondary" onclick="scrollToSection('soil-condition')">
+                    <i class="fas fa-mountain"></i>
+                    Check Soil
+                </button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Crop Health Analysis Card -->
+        <section id="crop-health" class="analysis-card">
+            <div class="card-header">
+                <h2><i class="fas fa-leaf"></i> Crop Health Analysis</h2>
+                <div class="status-indicator" id="crop-status"></div>
+            </div>
+            <div class="card-content">
+                <div class="upload-zone" id="crop-upload">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop leaf image here or click to browse</p>
+                        <input type="file" id="crop-file" accept="image/*" hidden>
+                    </div>
+                </div>
+                <div class="result-panel" id="crop-result" style="display: none;">
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h3 id="crop-class">Analysis Result</h3>
+                            <div class="confidence-badge" id="crop-confidence"></div>
+                        </div>
+                        <div class="result-details" id="crop-details"></div>
+                    </div>
+                </div>
+                <div class="loading-spinner" id="crop-loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing crop health...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pest Detection Card -->
+        <section id="pest-detection" class="analysis-card">
+            <div class="card-header">
+                <h2><i class="fas fa-bug"></i> Pest Detection</h2>
+                <div class="detection-count" id="pest-count">0 detected</div>
+            </div>
+            <div class="card-content">
+                <div class="upload-zone" id="pest-upload">
+                    <div class="upload-content">
+                        <i class="fas fa-camera"></i>
+                        <p>Upload image for pest detection</p>
+                        <input type="file" id="pest-file" accept="image/*" hidden>
+                    </div>
+                </div>
+                <div class="detection-grid" id="pest-results" style="display: none;"></div>
+                <div class="loading-spinner" id="pest-loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Detecting pests...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soil Condition Card -->
+        <section id="soil-condition" class="analysis-card">
+            <div class="card-header">
+                <h2><i class="fas fa-mountain"></i> Soil Condition</h2>
+                <div class="soil-grade" id="soil-grade">Not analyzed</div>
+            </div>
+            <div class="card-content">
+                <div class="soil-inputs">
+                    <div class="input-group">
+                        <label for="moisture">Moisture (%)</label>
+                        <div class="slider-container">
+                            <input type="range" id="moisture" min="0" max="100" value="50" class="slider">
+                            <span class="slider-value" id="moisture-value">50</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="nitrogen">Nitrogen (mg/kg)</label>
+                        <div class="slider-container">
+                            <input type="range" id="nitrogen" min="0" max="100" value="40" class="slider">
+                            <span class="slider-value" id="nitrogen-value">40</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="phosphorus">Phosphorus (mg/kg)</label>
+                        <div class="slider-container">
+                            <input type="range" id="phosphorus" min="0" max="100" value="30" class="slider">
+                            <span class="slider-value" id="phosphorus-value">30</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="potassium">Potassium (mg/kg)</label>
+                        <div class="slider-container">
+                            <input type="range" id="potassium" min="0" max="100" value="35" class="slider">
+                            <span class="slider-value" id="potassium-value">35</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="analyze-button" id="analyze-soil">
+                    <i class="fas fa-flask"></i>
+                    Analyze Soil
+                </button>
+                <div class="soil-results" id="soil-results" style="display: none;">
+                    <div class="overall-score">
+                        <div class="score-circle" id="overall-circle">
+                            <span id="overall-score">0</span>
+                            <small>Overall</small>
+                        </div>
+                    </div>
+                    <div class="nutrient-bars">
+                        <div class="nutrient-bar">
+                            <label>Moisture</label>
+                            <div class="progress-bar">
+                                <div class="progress" id="moisture-progress"></div>
+                            </div>
+                            <span id="moisture-score">0%</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <label>Nitrogen</label>
+                            <div class="progress-bar">
+                                <div class="progress" id="nitrogen-progress"></div>
+                            </div>
+                            <span id="nitrogen-score">0%</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <label>Phosphorus</label>
+                            <div class="progress-bar">
+                                <div class="progress" id="phosphorus-progress"></div>
+                            </div>
+                            <span id="phosphorus-score">0%</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <label>Potassium</label>
+                            <div class="progress-bar">
+                                <div class="progress" id="potassium-progress"></div>
+                            </div>
+                            <span id="potassium-score">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-spinner" id="soil-loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing soil condition...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-chart-bar"></i>
+    </button>
+
+    <!-- Quick Stats Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Quick Stats</h3>
+            <button class="close-sidebar" id="close-sidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div class="stat-item">
+                <i class="fas fa-leaf"></i>
+                <div>
+                    <h4>Recent Analysis</h4>
+                    <p>3 crops analyzed today</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-bug"></i>
+                <div>
+                    <h4>Pest Alerts</h4>
+                    <p>2 potential threats detected</p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-thermometer-half"></i>
+                <div>
+                    <h4>Weather</h4>
+                    <p>24°C, Partly cloudy</p>
+                </div>
+            </div>
+            <div class="tip-card">
+                <h4>💡 Tip of the Day</h4>
+                <p>Water your crops early morning for better absorption and reduced evaporation.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 AgriAI. Powered by AI & IoT.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
